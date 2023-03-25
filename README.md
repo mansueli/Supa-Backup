@@ -24,7 +24,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Supa-Backup
-        uses: mansueli/supa-backup-action@v0.0.3
+        uses: mansueli/supa-backup@v0.0.3
         with:
           supabase_url: ${{ secrets.SUPABASE_URL }}
           supabase_password: ${{ secrets.SUPABASE_PASSWORD }
