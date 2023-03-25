@@ -2,14 +2,20 @@ name: supa-backup
 description: Generate a Supabase Database backup file with pg-dump 15.
 author: mansueli
 
+inputs:
+  supabase_url:
+    description: 'The URL of your Supabase instance'
+    required: true
+  supabase_password:
+    description: 'The password for the Supabase instance'
+    required: true
+    
 runs:
   runs-on: ubuntu-latest
+  using: "composite"
   permissions:
       contents: write
   steps:
-     - uses: actions/checkout@v3
-       with:
-         ref: ${{ github.head_ref }}
      - name: Postgres15 
        run: |
          sudo apt-get remove postgresql-client-common
@@ -17,7 +23,7 @@ runs:
          wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo tee /etc/apt/trusted.gpg.d/pgdg.asc &>/dev/null
          sudo apt update
          sudo apt install postgresql-15 postgresql-client-15 -y
-         /usr/lib/postgresql/15/bin/pg_dump --clean --if-exists --quote-all-identifiers --schema '*' --exclude-schema 'extensions|graphql|graphql_public|net|pgbouncer|pgsodium|pgsodium_masks|realtime|supabase_functions|storage|pg_*|information_schema' -d postgres://postgres:${{ secrets.SUPABASE_PASSWORD }}@${{ secrets.SUPABASE_URL }}:6543/postgres > dump.sql
+         /usr/lib/postgresql/15/bin/pg_dump --clean --if-exists --quote-all-identifiers --schema '*' --exclude-schema 'extensions|graphql|graphql_public|net|pgbouncer|pgsodium|pgsodium_masks|realtime|supabase_functions|storage|pg_*|information_schema' -d postgres://postgres:${{ supabase_url }}@${{ supabase_password }}:6543/postgres > dump.sql
          
      - name: Tweaking the dump file    
        run: |
@@ -27,10 +33,6 @@ runs:
          sed -i -e 's/^CREATE SCHEMA "storage";$/-- CREATE SCHEMA "storage";/' dump.sql
          sed -i -e 's/^ALTER DEFAULT PRIVILEGES FOR ROLE "supabase_admin"/-- ALTER DEFAULT PRIVILEGES FOR ROLE "supabase_admin"/' dump.sql
        shell: bash   
-
-     - uses: stefanzweifel/git-auto-commit-action@v4
-       with:
-         commit_message: Supabase backup
     
 branding:
   icon: database
