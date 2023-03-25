@@ -13,7 +13,7 @@ on:
   push:
     branches: [ main ]
   pull_request:
-    branches: [main]
+    branches: [ main ]
   workflow_dispatch:
   schedule:
     - cron: '0 0 * * *' # Runs every day at midnight
