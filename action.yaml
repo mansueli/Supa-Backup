@@ -11,10 +11,7 @@ inputs:
     required: true
     
 runs:
-  runs-on: ubuntu-latest
   using: "composite"
-  permissions:
-      contents: write
   steps:
      - name: Postgres15 
        run: |
@@ -24,7 +21,8 @@ runs:
          sudo apt update
          sudo apt install postgresql-15 postgresql-client-15 -y
          /usr/lib/postgresql/15/bin/pg_dump --clean --if-exists --quote-all-identifiers --schema '*' --exclude-schema 'extensions|graphql|graphql_public|net|pgbouncer|pgsodium|pgsodium_masks|realtime|supabase_functions|storage|pg_*|information_schema' -d postgres://postgres:${{ supabase_url }}@${{ supabase_password }}:6543/postgres > dump.sql
-         
+       shell: bash   
+       
      - name: Tweaking the dump file    
        run: |
          sed -i -e 's/^DROP SCHEMA IF EXISTS "auth";$/-- DROP SCHEMA IF EXISTS "auth";/' dump.sql
