@@ -2,7 +2,7 @@
 
 ## Reporting a Vulnerability
 
-If you find a vulnerability or potential security issue with Supa-Backup, please report it to us as soon as possible by creating an issue in our repository or by emailing us at [your_email_address].
+If you find a vulnerability or potential security issue with Supa-Backup, please report it to us as soon as possible by creating an issue in our repository or in a DM on Twitter https://twitter.com/rmansueli.
 
 ## Supported Versions
 
