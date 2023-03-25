@@ -1,13 +1,6 @@
 name: supa-backup
 description: Generate a Supabase Database backup file with pg-dump 15.
 author: mansueli
-inputs:
-  supabase_db_url:
-    description: 'Database URL'
-    required: true
-  db_password:
-    description: 'The password to access the database'
-    required: true
 
 runs:
  run_db_backup:
