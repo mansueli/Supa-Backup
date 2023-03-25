@@ -1,6 +1,6 @@
 # Supa-Backup
 
-Supa-Backup is a GitHub action that creates a backup of your Supabase database and stores it in your repository. With this action, you can easily automate the process of creating backups and ensure that your data is safe and secure.
+Supa-Backup is a GitHub action that creates a backup of your Supabase database and stores it in your repository. With this action, you can easily automate the process of creating backups and ensure that your data is safe and secure. You can also copy our workflow example & deploy it directly to your repo. 
 
 ## Usage
 
@@ -40,7 +40,9 @@ You'll also need to set the following secrets in your repository settings to you
  - `SUPABASE_PASSWORD`
  - `SUPABASE_URL`
 
-#Alternatively, you can set-up this workflow on your project directly & use GitHub Secrets.
+# Workflow directly:
+
+Alternatively, you can set-up this workflow on your project directly & use GitHub Secrets:
 
 ````yaml
 name: Supa-backup
