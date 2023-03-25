@@ -24,8 +24,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Supa-Backup
-        uses: mansueli/supa-backup@v1
-
+        uses: mansueli/supa-backup-action@v0.0.3
+        with:
+          supabase_url: ${{ secrets.SUPABASE_URL }}
+          supabase_password: ${{ secrets.SUPABASE_PASSWORD }
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Supabase backup
          
 ```
 In this example, the Supa-Backup action is run every day at midnight. It runs on the latest version of Ubuntu and performs two steps: checking out your repository and running the Supa-Backup action.
