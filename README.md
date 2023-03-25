@@ -44,6 +44,14 @@ You'll also need to set the following secrets in your repository settings to you
 
 Alternatively, you can set-up this workflow on your project directly & use GitHub Secrets:
 
+You'll need to set the following secrets for it to work:
+
+- `SUPABASE_PASSWORD`
+- `SUPABASE_URL`
+
+> **Note** 
+> Path to set this: `https://github.com/<username>/<repo>/settings/secrets/actions`
+
 ````yaml
 name: Supa-backup
 # Controls when the workflow will run
