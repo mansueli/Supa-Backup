@@ -98,6 +98,56 @@ jobs:
        with:
          commit_message: Supabase backup
 ````
+
+# Storage Backup Workflow (generates an [Artifact](https://docs.github.com/en/actions/using-workflows/storing-workflow-data-as-artifacts))
+
+````yaml
+name: SupaStorage-backup
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *' # Runs every day at midnight
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE: ${{ secrets.SUPABASE_SERVICE_ROLE }}
+    permissions:
+      contents: write
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      with:
+         ref: ${{ github.head_ref }}
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install dependencies
+      run: |
+        pip install supabase
+        mkdir /tmp/supabase_storage_backup
+        cd /tmp/supabase_storage_backup
+        wget https://raw.githubusercontent.com/mansueli/Supa-Migrate/main/storage-backup.py
+        chmod +x storage-backup.py
+        python storage-backup.py
+        rm storage-backup.py
+      shell: bash
+
+    - name: Save backup as artifact
+      uses: actions/upload-artifact@v3
+      with:
+          name: Storage-Backup
+          path: /tmp/supabase_storage_backup # <= upload folder
+          retention-days: 14
+````
 Contributing
 If you find a bug or want to suggest a new feature, please open an issue or submit a pull request. We welcome contributions from the community and are happy to help you get started.
 
