@@ -4,10 +4,7 @@ author: mansueli
 
 inputs:
   supabase_url:
-    description: 'The URL of your Supabase instance'
-    required: true
-  supabase_password:
-    description: 'The password for the Supabase instance'
+    description: 'The connection URL of your Supabase instance, formatted as postgresql://[userspec@][hostspec][/dbname][?paramspec]'
     required: true
 
 runs:
@@ -21,10 +18,12 @@ runs:
          wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo tee /etc/apt/trusted.gpg.d/pgdg.asc &>/dev/null
          sudo apt update
          sudo apt install postgresql-15 postgresql-client-15 -y
-         /usr/lib/postgresql/15/bin/pg_dump --clean --if-exists --quote-all-identifiers --schema '*' --exclude-schema 'extensions|graphql|graphql_public|net|pgbouncer|pgsodium|pgsodium_masks|realtime|supabase_functions|storage|pg_*|information_schema' -d postgres://postgres:${{ inputs.supabase_url }}@${{ inputs.supabase_password }}:6543/postgres > dump.sql
+         /usr/lib/postgresql/15/bin/pg_dump --clean --if-exists --quote-all-identifiers --schema '*' \
+           --exclude-schema 'extensions|graphql|graphql_public|net|pgbouncer|pgsodium|pgsodium_masks|realtime|supabase_functions|storage|pg_*|information_schema' \
+           -d {{ inputs.supabase_url }} > dump.sql
 
      - name: Tweaking the dump file
-       shell: bash 
+       shell: bash
        run: |
          sed -i -e 's/^DROP SCHEMA IF EXISTS "auth";$/-- DROP SCHEMA IF EXISTS "auth";/' dump.sql
          sed -i -e 's/^DROP SCHEMA IF EXISTS "storage";$/-- DROP SCHEMA IF EXISTS "storage";/' dump.sql
