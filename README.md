@@ -26,8 +26,7 @@ jobs:
       - name: Supa-Backup
         uses: mansueli/supa-backup@v0.0.6
         with:
-          supabase_url: SUPABASE_URL
-          supabase_password: SUPABASE_PASSWORD
+          supabase_url: SUPABASE_DB_URL #e.g postgres://postgres:SUPABASE_PASSWORD@SUPABASE_DB_URL:6543/postgres
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: Supabase backup
