@@ -12,20 +12,25 @@ inputs:
 runs:
   using: "composite"
   steps:
-     - uses: actions/checkout@v4
-     - uses: supabase/setup-cli@v1
-       with:
-         version: latest
-     - name: Initialize Supabase CLI
-       run: supabase init
-     - name: Start Supabase CLI
-       run: supabase db start
-     - name: Backup roles
-       run: supabase db dump --db-url "{{ inputs.supabase_url }}" -f {{ inputs.file_prefix }}roles.sql --role-only
-     - name: Backup schema
-       run: supabase db dump --db-url "{{ inputs.supabase_url }}" -f {{ inputs.file_prefix }}schema.sql
-     - name: Backup data
-       run: supabase db dump --db-url "{{ inputs.supabase_url }}" -f {{ inputs.file_prefix }}data.sql --data-only --use-copy
+    - uses: actions/checkout@v4
+    - uses: supabase/setup-cli@v1
+      with:
+        version: latest
+    - name: Initialize Supabase CLI
+      run: supabase init
+      shell: bash
+    - name: Start Supabase CLI
+      run: supabase db start
+      shell: bash
+    - name: Backup roles
+      run: supabase db dump --db-url "{{ inputs.supabase_url }}" -f {{ inputs.file_prefix }}roles.sql --role-only
+      shell: bash
+    - name: Backup schema
+      run: supabase db dump --db-url "{{ inputs.supabase_url }}" -f {{ inputs.file_prefix }}schema.sql
+      shell: bash
+    - name: Backup data
+      run: supabase db dump --db-url "{{ inputs.supabase_url }}" -f {{ inputs.file_prefix }}data.sql --data-only --use-copy
+      shell: bash
 
 branding:
   icon: database
