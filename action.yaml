@@ -14,8 +14,8 @@ runs:
   steps:
      - uses: actions/checkout@v4
      - uses: supabase/setup-cli@v1
-        with:
-          version: latest
+       with:
+         version: latest
      - name: Initialize Supabase CLI
         run: supabase init
      - name: Start Supabase CLI
