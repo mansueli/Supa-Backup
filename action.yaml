@@ -1,35 +1,31 @@
 name: supa-backup
-description: Generate a Supabase Database backup file with pg-dump 15.
+description: Generate a Supabase Database backup supabase-cli.
 author: mansueli
 
 inputs:
   supabase_url:
     description: 'The connection URL of your Supabase instance, formatted as postgresql://[userspec@][hostspec][/dbname][?paramspec]'
     required: true
-
+  file_prefix:
+    description: 'The prefix of the backup files'
+    required: false
 runs:
   using: "composite"
   steps:
-     - name: Postgres15
-       shell: bash
-       run: |
-         sudo apt-get remove postgresql-client-common
-         sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
-         wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo tee /etc/apt/trusted.gpg.d/pgdg.asc &>/dev/null
-         sudo apt update
-         sudo apt install postgresql-15 postgresql-client-15 -y
-         /usr/lib/postgresql/15/bin/pg_dump --clean --if-exists --quote-all-identifiers --schema '*' \
-           --exclude-schema 'extensions|graphql|graphql_public|net|pgbouncer|pgsodium|pgsodium_masks|realtime|supabase_functions|storage|pg_*|information_schema' \
-           -d {{ inputs.supabase_url }} > dump.sql
-
-     - name: Tweaking the dump file
-       shell: bash
-       run: |
-         sed -i -e 's/^DROP SCHEMA IF EXISTS "auth";$/-- DROP SCHEMA IF EXISTS "auth";/' dump.sql
-         sed -i -e 's/^DROP SCHEMA IF EXISTS "storage";$/-- DROP SCHEMA IF EXISTS "storage";/' dump.sql
-         sed -i -e 's/^CREATE SCHEMA "auth";$/-- CREATE SCHEMA "auth";/' dump.sql
-         sed -i -e 's/^CREATE SCHEMA "storage";$/-- CREATE SCHEMA "storage";/' dump.sql
-         sed -i -e 's/^ALTER DEFAULT PRIVILEGES FOR ROLE "supabase_admin"/-- ALTER DEFAULT PRIVILEGES FOR ROLE "supabase_admin"/' dump.sql
+     - uses: actions/checkout@v4
+     - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+     - name: Initialize Supabase CLI
+        run: supabase init
+     - name: Start Supabase CLI
+        run: supabase db start
+     - name: Backup roles
+        run: supabase db dump --db-url "{{ inputs.supabase_url }}" -f {{ inputs.file_prefix }}roles.sql --role-only
+     - name: Backup schema
+        run: supabase db dump --db-url "{{ inputs.supabase_url }}" -f {{ inputs.file_prefix }}schema.sql
+     - name: Backup data
+        run: supabase db dump --db-url "{{ inputs.supabase_url }}" -f {{ inputs.file_prefix }}data.sql --data-only --use-copy
 
 branding:
   icon: database
