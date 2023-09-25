@@ -23,13 +23,13 @@ runs:
       run: supabase db start
       shell: bash
     - name: Backup roles
-      run: supabase db dump --db-url "{{ inputs.supabase_url }}" -f {{ inputs.file_prefix }}roles.sql --role-only
+      run: supabase db dump --db-url "${{ inputs.supabase_url }}" -f ${{ inputs.file_prefix }}roles.sql --role-only
       shell: bash
     - name: Backup schema
-      run: supabase db dump --db-url "{{ inputs.supabase_url }}" -f {{ inputs.file_prefix }}schema.sql
+      run: supabase db dump --db-url "${{ inputs.supabase_url }}" -f ${{ inputs.file_prefix }}schema.sql
       shell: bash
     - name: Backup data
-      run: supabase db dump --db-url "{{ inputs.supabase_url }}" -f {{ inputs.file_prefix }}data.sql --data-only --use-copy
+      run: supabase db dump --db-url "${{ inputs.supabase_url }}" -f ${{ inputs.file_prefix }}data.sql --data-only --use-copy
       shell: bash
 
 branding:
