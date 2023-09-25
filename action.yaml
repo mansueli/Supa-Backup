@@ -17,15 +17,15 @@ runs:
        with:
          version: latest
      - name: Initialize Supabase CLI
-        run: supabase init
+       run: supabase init
      - name: Start Supabase CLI
-        run: supabase db start
+       run: supabase db start
      - name: Backup roles
-        run: supabase db dump --db-url "{{ inputs.supabase_url }}" -f {{ inputs.file_prefix }}roles.sql --role-only
+       run: supabase db dump --db-url "{{ inputs.supabase_url }}" -f {{ inputs.file_prefix }}roles.sql --role-only
      - name: Backup schema
-        run: supabase db dump --db-url "{{ inputs.supabase_url }}" -f {{ inputs.file_prefix }}schema.sql
+       run: supabase db dump --db-url "{{ inputs.supabase_url }}" -f {{ inputs.file_prefix }}schema.sql
      - name: Backup data
-        run: supabase db dump --db-url "{{ inputs.supabase_url }}" -f {{ inputs.file_prefix }}data.sql --data-only --use-copy
+       run: supabase db dump --db-url "{{ inputs.supabase_url }}" -f {{ inputs.file_prefix }}data.sql --data-only --use-copy
 
 branding:
   icon: database
