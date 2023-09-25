@@ -11,7 +11,7 @@ To use Supa-Backup, you'll need to add the action to your GitHub workflow. Here'
       - name: Checkout
         uses: actions/checkout@v4
       - name: Supa-Backup
-        uses: mansueli/supa-backup@v1.0.4
+        uses: mansueli/supa-backup@v1.0.5
         with:
           supabase_url: 'postgresql://postgres:<pass>@db.<ref>.supabase.co:5432/postgres'
           file_prefix: 'test_' 
@@ -35,7 +35,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Supa-Backup
-        uses: mansueli/supa-backup@v1.0.4
+        uses: mansueli/supa-backup@v1.0.5
         with:
           supabase_url: 'postgresql://postgres:<pass>@db.<ref>.supabase.co:5432/postgres'
           file_prefix: 'test_'
