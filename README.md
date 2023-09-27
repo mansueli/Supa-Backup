@@ -16,6 +16,10 @@ To use Supa-Backup, you'll need to add the action to your GitHub workflow. Here'
           supabase_url: 'postgresql://postgres:<pass>@db.<ref>.supabase.co:5432/postgres'
           file_prefix: 'test_' 
 ```
+
+> [!WARNING]  
+> DO NOT run this on a public repo.
+
 ## Usage
 
 ### Workflow Example
@@ -46,7 +50,7 @@ jobs:
 
 In this example, the Supa-Backup action is run every day at midnight. It runs on the latest version of Ubuntu and performs two steps: checking out your repository and running the Supa-Backup action.
 
-# Storage Backup Workflow (generates an [Artifact](https://docs.github.com/en/actions/using-workflows/storing-workflow-data-as-artifacts))
+# Storage Backup Workflow (commits the backup to the repo)
 
 ````yaml
 name: SupaStorage-backup
